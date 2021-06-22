@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
         width: 150,
         borderRadius: 25,
         height: 200,
-        marginRight: 20
+        marginRight: 30
     }
 })

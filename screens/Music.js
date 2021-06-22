@@ -1,12 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, TextInput, Text, SafeAreaView } from 'react-native'
+import { StyleSheet, View, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Text, StatusBar } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import Stories from './Stories'
-import Songs from './Songs'
+import { useNavigation } from '@react-navigation/native';
 
 const Music = () => {
     return (
         <SafeAreaView>
+            <StatusBar barStyle="light-content" backgroundColor="#0E2A47" />
             <View style={styles.container}>
                 <View style={styles.search}>
                     <Ionicons name="musical-notes" color="#46C48A" size={24} />
@@ -23,8 +24,7 @@ const Music = () => {
                 </ScrollView>
             </View>
                 <ScrollView>
-                        <View style={styles.songs}>
-                            <Songs />
+                        <View style={styles.songs}>    
                             <Songs />
                             <Songs />
                             <Songs />
@@ -39,6 +39,47 @@ const Music = () => {
     )
 }
 
+const Songs = () => {
+    const navigation = useNavigation();
+
+    return (
+        <View style={styles.main}>
+            <Image source={require('../assets/photo.png')} style={{
+                width: 30,
+                height: 30,
+                borderRadius: 999,
+                marginRight: 10,
+                marginLeft: 10
+            }} />
+            <TouchableOpacity onPress={() => navigation.navigate("Play")}>
+                <View style={{
+                 marginRight: 10,
+                 marginLeft: 10
+                }}>
+                    <Text style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        fontSize: 15
+                    }}>All Into Nothing</Text>
+                    <Text style={{
+                        color: "gray"
+                    }}>Adam Melchor, Lennon Stella</Text>
+                </View>
+            </TouchableOpacity>
+            
+            <Ionicons style={{
+                 marginRight: 10,
+                 marginLeft: 10
+            }} name="heart-outline" color="#FFF" size={24} />
+            <Ionicons style={{
+                 marginRight: 10,
+                marginLeft: 10
+            }} name="download-outline" color="#FFF" size={24} />
+        </View>
+    )
+}
+
+
 export default Music
 
 const styles = StyleSheet.create({
@@ -47,7 +88,7 @@ const styles = StyleSheet.create({
     },
     search: {
         backgroundColor: "#0E2A47",
-        marginTop: 50,
+        marginTop: 10,
         paddingVertical: 5,
         display: "flex",
         justifyContent: 'space-between',
@@ -79,6 +120,21 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 80
+        marginBottom: 110
+    },
+    main: {
+        backgroundColor: "#0E2A47",
+        marginTop: 10,
+        marginBottom: 10,
+        paddingVertical: 5,
+        display: "flex",
+        justifyContent: 'space-evenly',
+        alignItems: "center",
+        borderRadius: 12,
+        flexDirection: "row",
+        color: "white",
+        marginLeft: 20,
+        marginRight: 20,
+        paddingVertical: 10
     }
 })
