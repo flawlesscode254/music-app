@@ -180,7 +180,7 @@ const Profile = () => {
             color: "gray",
           }}
         >
-          MAGNUS, Whats Gud
+          MAGNUS, Whats Gud Today
         </Text>
         <View
           style={{
