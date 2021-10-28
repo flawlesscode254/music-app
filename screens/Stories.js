@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 
 const Stories = () => {
     return (
@@ -11,17 +11,17 @@ const Stories = () => {
                     borderRadius: 25,
                     marginLeft: 20
                 }} source={require('../assets/one.jpg')} />
-                 <Image style={{
-                    width: 45,
-                    height: 45,
-                    borderRadius: 999,
-                    position: "absolute",
-                    top: 10,
-                    bottom: 0,
-                    left: 30,
-                    borderWidth: 4,
-                    borderColor: "blue"
-                }} source={require('../assets/photo.png')} />
+                    <Image style={{
+                        width: 45,
+                        height: 45,
+                        borderRadius: 999,
+                        position: "absolute",
+                        top: 10,
+                        bottom: 0,
+                        left: 30,
+                        borderWidth: 4,
+                        borderColor: "blue"
+                    }} source={require('../assets/photo.png')} />
             </View>
         </View>
     )

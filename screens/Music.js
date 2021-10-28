@@ -1,10 +1,23 @@
-import React from 'react'
-import { StyleSheet, View, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Text, StatusBar } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import { FlatList, StyleSheet, View, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Text, StatusBar } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import Stories from './Stories'
 import { useNavigation } from '@react-navigation/native';
+import db from '../firebase';
 
 const Music = () => {
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        db.collection("posts").orderBy("time", 'desc').onSnapshot((snapshot) => {
+            setData(snapshot.docs.map( doc => ({
+                id: doc.id,
+                artist: doc.data().artist,
+                file: doc.data().file,
+                title: doc.data().title
+            })))
+        })
+    }, [])
     return (
         <SafeAreaView>
             <StatusBar barStyle="light-content" backgroundColor="#0E2A47" />
@@ -22,24 +35,25 @@ const Music = () => {
                         <Stories />
                     </View>
                 </ScrollView>
-            </View>
-                <ScrollView>
-                        <View style={styles.songs}>    
-                            <Songs />
-                            <Songs />
-                            <Songs />
-                            <Songs />
-                            <Songs />
-                            <Songs />
-                            <Songs />
-                            <Songs />
-                        </View>
-                </ScrollView>
+            </View>  
+            <FlatList 
+                data={data}
+                keyExtractor={(item) => item.id}
+                renderItem={({item}) => {
+                    return (
+                        <Songs 
+                            file={item.file}
+                            artist={item.artist}
+                            title={item.title}
+                        />
+                    )
+                }}
+            />
         </SafeAreaView>
     )
 }
 
-const Songs = () => {
+const Songs = ({file, title, artist}) => {
     const navigation = useNavigation();
 
     return (
@@ -51,7 +65,11 @@ const Songs = () => {
                 marginRight: 10,
                 marginLeft: 10
             }} />
-            <TouchableOpacity onPress={() => navigation.navigate("Play")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Play", {
+                url: file,
+                artist: artist,
+                title: title
+            })}>
                 <View style={{
                  marginRight: 10,
                  marginLeft: 10
@@ -60,21 +78,12 @@ const Songs = () => {
                         color: "white",
                         fontWeight: "bold",
                         fontSize: 15
-                    }}>All Into Nothing</Text>
+                    }}>{title}</Text>
                     <Text style={{
                         color: "gray"
-                    }}>Adam Melchor, Lennon Stella</Text>
+                    }}>{artist}</Text>
                 </View>
             </TouchableOpacity>
-            
-            <Ionicons style={{
-                 marginRight: 10,
-                 marginLeft: 10
-            }} name="heart-outline" color="#FFF" size={24} />
-            <Ionicons style={{
-                 marginRight: 10,
-                marginLeft: 10
-            }} name="download-outline" color="#FFF" size={24} />
         </View>
     )
 }

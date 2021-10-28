@@ -13,24 +13,32 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { Sound } from "expo-av/build/Audio/Sound";
+import { useNavigation } from "@react-navigation/core";
 
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 
-const Profile = () => {
+const Profile = ({route}) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [sound, setSound] = useState();
-  const [duration, setDuration] = useState("0:00");
-  const [current, setCurrent] = useState("0:00");
+  const [duration, setDuration] = useState();
+  const [current, setCurrent] = useState();
   const [bar, setBar] = useState(0);
   const [checker, setCheker] = useState(0);
   const [song, setSong] = useState(null);
+  const [artist, setArtist] = useState(null)
+  const [title, setTitle] = useState(null)
 
-  useEffect(() => {
-    setSong(
-      "https://ncsmusic.s3.eu-west-1.amazonaws.com/tracks/000/000/962/sanity-1623769237-KjJMmVoEli.mp3"
-    );
-  }, []);
+  const navigation = useNavigation()
+
+  navigation.addListener("focus", () => {
+    if (route.params) {
+      const {url, artist, title} = route.params
+      setSong(url);
+      setArtist(artist)
+      setTitle(title)
+    }
+  })
 
   const onPlaybackStatusUpdate = (status) => {
     let a = status.durationMillis;
@@ -57,7 +65,8 @@ const Profile = () => {
 
     const { sound: newSound } = await Sound.createAsync(
       { uri: song },
-      { shouldPlay: isPlaying },
+      { shouldPlay: isPlaying,
+      isLooping: true },
       onPlaybackStatusUpdate
     );
 
@@ -97,42 +106,6 @@ const Profile = () => {
           height: 0.3 * h,
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingHorizontal: 20,
-            marginTop: 60,
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "gray",
-              width: 35,
-              height: 35,
-              borderRadius: 999,
-            }}
-          >
-            <Ionicons name="heart-outline" color="#FFF" size={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "gray",
-              width: 35,
-              height: 35,
-              borderRadius: 999,
-            }}
-          >
-            <Ionicons name="download-outline" color="#FFF" size={24} />
-          </TouchableOpacity>
-        </View>
         <LinearGradient
           colors={["rgba(36,19,50,1)", "transparent"]}
           style={{
@@ -173,14 +146,14 @@ const Profile = () => {
             marginTop: 20,
           }}
         >
-          Sanity
+          {title}
         </Text>
         <Text
           style={{
             color: "gray",
           }}
         >
-          MAGNUS, Whats Gud Today
+          {artist}
         </Text>
         <View
           style={{
@@ -204,77 +177,58 @@ const Profile = () => {
             justifyContent: "space-between",
             alignItems: "center",
             display: "flex",
+            height: 30
           }}
         >
-          <Text
-            style={{
-              color: "#FFF",
-              marginRight: 200,
-            }}
-          >
-            {current}
-          </Text>
-          <Text
-            style={{
-              color: "#FFF",
-            }}
-          >
-            {duration}
-          </Text>
+          {isPlaying && (
+            <Text
+              style={{
+                color: "#FFF",
+                marginRight: 200,
+              }}
+            >
+              {current}
+            </Text>
+          )}
+          {isPlaying && (
+            <Text
+              style={{
+                color: "#FFF",
+              }}
+            >
+              {duration}
+            </Text>
+          )}
+
         </View>
 
         <View
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexDirection: "row",
-            marginTop: 10,
+            justifyContent: "center",
+            alignItems: "center"
           }}
         >
-          <TouchableOpacity
-            style={{
-              marginRight: 40,
-            }}
-          >
-            <Ionicons name="volume-medium" size={20} color="#46C48A" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              marginRight: 40,
-            }}
-          >
-            <Ionicons name="play-skip-back" size={20} color="#46C48A" />
-          </TouchableOpacity>
           {!isPlaying ? (
             <TouchableOpacity
-              style={{
-                marginRight: 40,
-              }}
+            style={{
+              justifyContent: "center",
+              alignItems: "center"
+            }}
               onPress={playSound}
             >
               <Ionicons name="play-circle-outline" color="#46C48A" size={50} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              style={{
-                marginRight: 40,
-              }}
+            style={{
+              justifyContent: "center",
+              alignItems: "center"
+            }}
               onPress={pauseSound}
             >
               <Ionicons name="pause-circle-outline" color="#46C48A" size={50} />
             </TouchableOpacity>
           )}
-          <TouchableOpacity
-            style={{
-              marginRight: 40,
-            }}
-          >
-            <Ionicons name="play-skip-forward" size={20} color="#46C48A" />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons name="repeat" size={20} color="#46C48A" />
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
