@@ -26,7 +26,11 @@ const Music = () => {
         })
     }, [])
     return (
-        <View>
+        <View style={{
+            flex: 1,
+            justifyContent: "center",
+            backgroundColor: "#FFFFFF"
+        }}>
             <StatusBar barStyle="light-content" backgroundColor="#0E2A47" />
             <View style={styles.container}>
                 <View style={styles.search}>
@@ -128,7 +132,7 @@ const Songs = ({ file, title, artist }) => {
                     }}>
                         <Text 
                         numberOfLines={1}
-                        ellipsizeMode="middle"
+                        ellipsizeMode="tail"
                         style={{
                             color: "white",
                             fontWeight: "bold",
@@ -149,9 +153,9 @@ export default Music
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#71e3af",
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25
+        backgroundColor: "#6ea4f0",
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15
     },
     search: {
         backgroundColor: "#0E2A47",
