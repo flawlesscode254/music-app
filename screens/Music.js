@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { FlatList, StyleSheet, View, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Text, StatusBar } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import Stories from './Stories'
@@ -7,10 +7,11 @@ import db from '../firebase';
 
 const Music = () => {
     const [data, setData] = useState([])
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         db.collection("posts").orderBy("time", 'desc').onSnapshot((snapshot) => {
-            setData(snapshot.docs.map( doc => ({
+            setData(snapshot.docs.map(doc => ({
                 id: doc.id,
                 artist: doc.data().artist,
                 file: doc.data().file,
@@ -24,9 +25,30 @@ const Music = () => {
             <View style={styles.container}>
                 <View style={styles.search}>
                     <Ionicons name="musical-notes" color="#46C48A" size={24} />
-                    <TextInput style={styles.input} placeholderTextColor = "#FFF" placeholder="Enter to search..." />
+                    <TextInput
+                        value={search}
+                        onChangeText={text => setSearch(text)}
+                        style={styles.input}
+                        placeholderTextColor="#FFF"
+                        placeholder="Enter to search..."
+                    />
                     <Ionicons name="search" color="#F69237" size={24} />
                 </View>
+                {data.filter((val) => {
+                        if (search === '') {
+                        }
+                        else if (val.title.toLowerCase().includes(search.toLowerCase())) {
+                            let a = val.title
+                            return a
+                        }
+                    }).map((val) => (
+                        <Songs 
+                            key={val.id}
+                            file={val.file}
+                            artist={val.artist}
+                            title={val.title}
+                        />
+                    ))}
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
                     <View style={styles.stories}>
                         <Stories />
@@ -35,13 +57,13 @@ const Music = () => {
                         <Stories />
                     </View>
                 </ScrollView>
-            </View>  
-            <FlatList 
+            </View>
+            <FlatList
                 data={data}
                 keyExtractor={(item) => item.id}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                     return (
-                        <Songs 
+                        <Songs
                             file={item.file}
                             artist={item.artist}
                             title={item.title}
@@ -53,7 +75,7 @@ const Music = () => {
     )
 }
 
-const Songs = ({file, title, artist}) => {
+const Songs = ({ file, title, artist }) => {
     const navigation = useNavigation();
 
     return (
@@ -71,8 +93,8 @@ const Songs = ({file, title, artist}) => {
                 title: title
             })}>
                 <View style={{
-                 marginRight: 10,
-                 marginLeft: 10
+                    marginRight: 10,
+                    marginLeft: 10
                 }}>
                     <Text style={{
                         color: "white",
