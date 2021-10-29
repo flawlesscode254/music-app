@@ -56,12 +56,12 @@ const Music = () => {
                         return a
                     }
                 }).map((val) => (
-                        <Songs
-                            key={val.id}
-                            file={val.file}
-                            artist={val.artist}
-                            title={val.title}
-                        />
+                    <Songs
+                        key={val.id}
+                        file={val.file}
+                        artist={val.artist}
+                        title={val.title}
+                    />
                 ))}
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={styles.stories}>
@@ -104,33 +104,42 @@ const Songs = ({ file, title, artist }) => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.main}>
+        <View>
             <Image source={require('../assets/photo.png')} style={{
                 width: 30,
                 height: 30,
                 borderRadius: 999,
-                marginRight: 10,
-                marginLeft: 10
+                position: "absolute",
+                left: 10,
+                top: 45,
+                zIndex: 100,
+                borderWidth: 1.5,
+                borderColor: "#FFFFFF"
             }} />
-            <TouchableOpacity onPress={() => navigation.navigate("Play", {
-                url: file,
-                artist: artist,
-                title: title
-            })}>
-                <View style={{
-                    marginRight: 10,
-                    marginLeft: 10
-                }}>
-                    <Text style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        fontSize: 15
-                    }}>{title}</Text>
-                    <Text style={{
-                        color: "gray"
-                    }}>{artist}</Text>
-                </View>
-            </TouchableOpacity>
+            <View style={styles.main}>
+                <TouchableOpacity onPress={() => navigation.navigate("Play", {
+                    url: file,
+                    artist: artist,
+                    title: title
+                })}>
+                    <View style={{
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}>
+                        <Text 
+                        numberOfLines={1}
+                        ellipsizeMode="middle"
+                        style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            fontSize: 15
+                        }}>{title}</Text>
+                        <Text style={{
+                            color: "gray"
+                        }}>{artist}</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -184,15 +193,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#0E2A47",
         marginTop: 10,
         marginBottom: 10,
-        paddingVertical: 5,
-        display: "flex",
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: "center",
         borderRadius: 12,
         flexDirection: "row",
         color: "white",
-        marginLeft: 20,
-        marginRight: 20,
-        paddingVertical: 10
+        marginHorizontal: 20,
+        paddingVertical: 10,
+        paddingHorizontal: 10
     }
 })

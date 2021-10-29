@@ -12,7 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import { Sound } from "expo-av/build/Audio/Sound";
+import { Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/core";
 
 const w = Dimensions.get("window").width;
@@ -28,8 +28,13 @@ const Profile = ({ route }) => {
   const [song, setSong] = useState(null);
   const [artist, setArtist] = useState(null)
   const [title, setTitle] = useState(null)
+  const [repeat, setRepeat] = useState(false)
 
   const navigation = useNavigation()
+
+  const makeRepeat = () => {
+    setRepeat(!repeat)
+  }
 
   navigation.addListener("focus", () => {
     if (route.params) {
@@ -63,11 +68,11 @@ const Profile = ({ route }) => {
       await sound.unloadAsync();
     }
 
-    const { sound: newSound } = await Sound.createAsync(
+    const { sound: newSound } = await Audio.Sound.createAsync(
       { uri: song },
       {
         shouldPlay: isPlaying,
-        isLooping: true
+        isLooping: repeat
       },
       onPlaybackStatusUpdate
     );
@@ -78,6 +83,12 @@ const Profile = ({ route }) => {
   useEffect(() => {
     if (song) {
       playCurrentSong();
+      Audio.setAudioModeAsync({
+        staysActiveInBackground: true,
+        shouldDuckAndroid: true,
+        interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+        playThroughEarpieceAndroid: false
+     });
     }
   }, [song]);
 
@@ -146,6 +157,7 @@ const Profile = ({ route }) => {
             fontWeight: "bold",
             fontSize: 15,
             marginTop: 20,
+            textAlign: "center"
           }}
         >
           {title}
@@ -213,9 +225,9 @@ const Profile = ({ route }) => {
               justifyContent: "center",
               alignItems: "center"
             }}
-            onPress={pauseSound}
+            onPress={makeRepeat}
           >
-            <Ionicons name="repeat" color="#46C48A" size={25} />
+            <Ionicons name="repeat" color={repeat ? "#46C48A" : "#FFF"} size={25} />
           </TouchableOpacity>
           <View
             style={{
