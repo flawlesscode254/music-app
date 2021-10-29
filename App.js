@@ -15,7 +15,7 @@ const App = () => {
   const tabBarOptions = {
     showLabel: false,
     style: {
-        backgroundColor: "#222222",
+        backgroundColor: "#0E2A47",
         paddingBottom: 12,
         paddingTop: 12
     }

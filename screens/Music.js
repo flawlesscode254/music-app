@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, StyleSheet, View, ScrollView, TextInput, SafeAreaView, TouchableOpacity, Image, Text, StatusBar } from 'react-native'
+import { FlatList, StyleSheet, View, ScrollView, TextInput, TouchableOpacity, Image, Text, StatusBar } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import Stories from './Stories'
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,12 @@ import db from '../firebase';
 const Music = () => {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
+
+    const navigation = useNavigation()
+
+    navigation.addListener("blur", () => {
+        setSearch("")
+    })
 
     useEffect(() => {
         db.collection("posts").orderBy("time", 'desc').onSnapshot((snapshot) => {
@@ -20,11 +26,11 @@ const Music = () => {
         })
     }, [])
     return (
-        <SafeAreaView>
+        <View>
             <StatusBar barStyle="light-content" backgroundColor="#0E2A47" />
             <View style={styles.container}>
                 <View style={styles.search}>
-                    <Ionicons name="musical-notes" color="#46C48A" size={24} />
+                    <Ionicons name="musical-notes" color="#ed1186" size={24} />
                     <TextInput
                         value={search}
                         onChangeText={text => setSearch(text)}
@@ -38,32 +44,42 @@ const Music = () => {
                         }}>
                             <Ionicons name="close-circle" color="#F69237" size={24} />
                         </TouchableOpacity>
-
                     ) : (
                         null
                     )}
                 </View>
                 {data.filter((val) => {
-                        if (search === '') {
-                        }
-                        else if (val.title.toLowerCase().includes(search.toLowerCase())) {
-                            let a = val.title
-                            return a
-                        }
-                    }).map((val) => (
-                        <Songs 
-                            key={val.id}
-                            file={val.file}
-                            artist={val.artist}
-                            title={val.title}
-                        />
-                    ))}
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
+                    if (search === '') {
+                    }
+                    else if (val.title.toLowerCase().includes(search.toLowerCase())) {
+                        let a = val.title
+                        return a
+                    }
+                }).map((val) => (
+                    <Songs
+                        key={val.id}
+                        file={val.file}
+                        artist={val.artist}
+                        title={val.title}
+                    />
+                ))}
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={styles.stories}>
-                        <Stories />
-                        <Stories />
-                        <Stories />
-                        <Stories />
+                        <Stories
+                            url="https://i1.sndcdn.com/artworks-000396680553-cgwcyk-t500x500.jpg"
+                        />
+                        <Stories
+                            url="https://miro.medium.com/max/3150/2*OtcF2rdxLbrOiJjyV518Mw.png"
+                        />
+                        <Stories
+                            url="https://static.displate.com/857x1200/displate/2019-03-13/31cca161872dc91eb707ec537e6e17cf_9fbebe29d5aa84fac748f0a5017ec693.jpg"
+                        />
+                        <Stories
+                            url="https://yt3.ggpht.com/ytc/AKedOLR6jrecjR5XHhE-2_79GYEF9SSy2TQDWUdsaMHu=s900-c-k-c0x00ffffff-no-rj"
+                        />
+                        <Stories
+                            url="https://image.winudf.com/v2/image/Y29tLmd5bXJhZGlvLnJhZGlvX2FwcF9pY29uXzE1MTE3MjQ4MjdfMDAx/icon.png?w=&fakeurl=1"
+                        />
                     </View>
                 </ScrollView>
             </View>
@@ -80,7 +96,7 @@ const Music = () => {
                     )
                 }}
             />
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -124,7 +140,9 @@ export default Music
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#FFF"
+        backgroundColor: "#71e3af",
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25
     },
     search: {
         backgroundColor: "#0E2A47",
