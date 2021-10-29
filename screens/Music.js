@@ -56,12 +56,12 @@ const Music = () => {
                         return a
                     }
                 }).map((val) => (
-                    <Songs
-                        key={val.id}
-                        file={val.file}
-                        artist={val.artist}
-                        title={val.title}
-                    />
+                        <Songs
+                            key={val.id}
+                            file={val.file}
+                            artist={val.artist}
+                            title={val.title}
+                        />
                 ))}
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                     <View style={styles.stories}>

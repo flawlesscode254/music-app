@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/core";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 
-const Profile = ({route}) => {
+const Profile = ({ route }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [sound, setSound] = useState();
   const [duration, setDuration] = useState();
@@ -33,7 +33,7 @@ const Profile = ({route}) => {
 
   navigation.addListener("focus", () => {
     if (route.params) {
-      const {url, artist, title} = route.params
+      const { url, artist, title } = route.params
       setSong(url);
       setArtist(artist)
       setTitle(title)
@@ -65,8 +65,10 @@ const Profile = ({route}) => {
 
     const { sound: newSound } = await Sound.createAsync(
       { uri: song },
-      { shouldPlay: isPlaying,
-      isLooping: true },
+      {
+        shouldPlay: isPlaying,
+        isLooping: true
+      },
       onPlaybackStatusUpdate
     );
 
@@ -201,34 +203,59 @@ const Profile = ({route}) => {
           )}
 
         </View>
-
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          {!isPlaying ? (
-            <TouchableOpacity
+        <View style={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexDirection: "row"
+        }}>
+          <TouchableOpacity
             style={{
               justifyContent: "center",
               alignItems: "center"
             }}
-              onPress={playSound}
-            >
-              <Ionicons name="play-circle-outline" color="#46C48A" size={50} />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
+            onPress={pauseSound}
+          >
+            <Ionicons name="repeat" color="#46C48A" size={25} />
+          </TouchableOpacity>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginLeft: 50,
+              marginRight: 50
+            }}
+          >
+            {!isPlaying ? (
+              <TouchableOpacity
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                onPress={playSound}
+              >
+                <Ionicons name="play-circle-outline" color="#46C48A" size={50} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+                onPress={pauseSound}
+              >
+                <Ionicons name="pause-circle-outline" color="#46C48A" size={50} />
+              </TouchableOpacity>
+            )}
+          </View>
+          <TouchableOpacity
             style={{
               justifyContent: "center",
               alignItems: "center"
             }}
-              onPress={pauseSound}
-            >
-              <Ionicons name="pause-circle-outline" color="#46C48A" size={50} />
-            </TouchableOpacity>
-          )}
+            onPress={pauseSound}
+          >
+            <Ionicons name="volume-high" color="#46C48A" size={25} />
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
