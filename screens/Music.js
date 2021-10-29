@@ -30,9 +30,18 @@ const Music = () => {
                         onChangeText={text => setSearch(text)}
                         style={styles.input}
                         placeholderTextColor="#FFF"
-                        placeholder="Enter to search..."
+                        placeholder="Search by song name..."
                     />
-                    <Ionicons name="search" color="#F69237" size={24} />
+                    {search ? (
+                        <TouchableOpacity onPress={() => {
+                            setSearch("")
+                        }}>
+                            <Ionicons name="close-circle" color="#F69237" size={24} />
+                        </TouchableOpacity>
+
+                    ) : (
+                        null
+                    )}
                 </View>
                 {data.filter((val) => {
                         if (search === '') {
