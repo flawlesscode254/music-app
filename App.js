@@ -24,7 +24,6 @@ const App = () => {
 const screenOptions = ({ route }) => ({
     tabBarIcon: ({ focused }) => {
         let iconName = "home"
-
         switch (route.name) {
             case "Home":
                 iconName = "home"
